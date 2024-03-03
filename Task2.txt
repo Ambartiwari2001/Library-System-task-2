@@ -1,0 +1,168 @@
+e, here's a Java task for a developer:
+
+### Task: Implement a Simple Library System
+
+Create a simple library system in Java that allows for the management of books. The system should have the following features:
+
+1. *Book Class:*
+   - Create a Book class with the following attributes:
+     - title: String
+     - author: String
+     - isbn: String
+     - available: boolean (to track if the book is available for borrowing)
+
+2. *Library Class:*
+   - Create a Library class to manage the books.
+   - It should have a list (you can use an ArrayList) of Book objects.
+   - Implement the following methods:
+     - addBook(Book book): Adds a book to the library.
+     - borrowBook(String isbn): Marks a book as not available (if available) when borrowed.
+     - returnBook(String isbn): Marks a book as available (if not already) when returned.
+     - searchByTitle(String title): Searches for books by title and prints out the details of matching books.
+     - searchByAuthor(String author): Searches for books by author and prints out the details of matching books.
+     - displayAvailableBooks(): Displays all available books.
+     - displayBorrowedBooks(): Displays all borrowed books.
+
+3. *Main Class:*
+   - Create a Main class to test your Library class.
+   - In the main method, create a few Book objects, add them to the library, and perform operations like borrowing, returning, and searching for books.
+
+
+
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    @Override
+    public String toString() {
+        return "Title: " + title + ", Author: " + author;
+    }
+}
+
+public class LibrarySystem {
+    private ArrayList<Book> books = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        LibrarySystem librarySystem = new LibrarySystem();
+        librarySystem.run();
+    }
+
+    public void run() {
+        boolean running = true;
+        while (running) {
+            System.out.println("\nLibrary System Menu:");
+            System.out.println("1. Add a book");
+            System.out.println("2. Search for a book");
+            System.out.println("3. Remove a book");
+            System.out.println("4. Display all books");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = getIntegerInput();
+
+            switch (choice) {
+                case 1:
+                    addBook();
+                    break;
+                case 2:
+                    searchBook();
+                    break;
+                case 3:
+                    removeBook();
+                    break;
+                case 4:
+                    displayBooks();
+                    break;
+                case 5:
+                    running = false;
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+        scanner.close();
+    }
+
+    private int getIntegerInput() {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Invalid input. Please enter a number: ");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    private void addBook() {
+        scanner.nextLine(); // Consume newline character
+        System.out.print("Enter the title of the book: ");
+        String title = scanner.nextLine();
+        System.out.print("Enter the author of the book: ");
+        String author = scanner.nextLine();
+        books.add(new Book(title, author));
+        System.out.println("Book added successfully!");
+    }
+
+    private void searchBook() {
+        scanner.nextLine(); // Consume newline character
+        System.out.print("Enter the title of the book to search for: ");
+        String searchTitle = scanner.nextLine();
+        boolean found = false;
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(searchTitle)) {
+                System.out.println("Book found: " + book);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Book not found.");
+        }
+    }
+
+    private void removeBook() {
+        scanner.nextLine(); // Consume newline character
+        System.out.print("Enter the title of the book to remove: ");
+        String removeTitle = scanner.nextLine();
+        boolean removed = false;
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(removeTitle)) {
+                books.remove(book);
+                removed = true;
+                System.out.println("Book removed successfully.");
+                break;
+            }
+        }
+        if (!removed) {
+            System.out.println("Book not found.");
+        }
+    }
+
+    private void displayBooks() {
+        if (books.isEmpty()) {
+            System.out.println("No books in the library.");
+        } else {
+            System.out.println("Books in the library:");
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+}
